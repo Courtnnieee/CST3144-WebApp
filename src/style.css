@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle,
+      #41a880 0%,
+      #10505f 20%,
+      #002a50 40%,
+      #000000 80%);
+}
