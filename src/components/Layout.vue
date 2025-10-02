@@ -1,5 +1,5 @@
 <script setup>
-
+const emit = defineEmits(['navigate'])
 </script>
 
 <template>
@@ -10,9 +10,9 @@
                 <img src="../assets/Logo.png" alt="Logo" />
             </div>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Book Lessons</a></li>
-                <li><a href="#">Checkout</a></li>
+                <li><a href="#" @click.prevent="emit('navigate', 'welcome')">Home</a></li>
+        <li><a href="#" @click.prevent="emit('navigate', 'lesson')">Book Lessons</a></li>
+        <li><a href="#" @click.prevent="emit('navigate', 'checkout')">Checkout</a></li>
             </ul>
         </nav>
     </header>
@@ -23,32 +23,33 @@
 
     <footer>
         <h1>Your After-School Learning Hub</h1>
-        <h2>Contact us at</h2> 
+        <h2>Contact us at</h2>
         <a href="https://github.com/Courtnnieee" target="_blank">
             <img alt="pfp" src="https://avatars.githubusercontent.com/u/159250861?v=4"></img>
             <p>Courtnnieee</p>
         </a>
         <p>Find us in social media</p>
         <div class="social-links">
-    <a href="https://www.linkedin.com/in/courtney-b-626b0a2b9/" target="_blank" rel="noopener noreferrer">
-      <img src="../assets/LinkedIn.png" alt="LinkedIn">
-    </a>
+            <a href="https://www.linkedin.com/in/courtney-b-626b0a2b9/" target="_blank" rel="noopener noreferrer">
+                <img src="../assets/LinkedIn.png" alt="LinkedIn">
+            </a>
 
-     <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-      <img src="../assets/Facebook.webp" alt="Facebook" width="32" height="32">
-    </a>
-   
-    <a href="https://x.com/?lang=en" target="_blank" rel="noopener noreferrer">
-      <img src="../assets/x.png" alt="X" width="32" height="32">
-    </a>
-  </div>
-  &copy; 2025 EduClass.IQ
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                <img src="../assets/Facebook.webp" alt="Facebook" width="32" height="32">
+            </a>
+
+            <a href="https://x.com/?lang=en" target="_blank" rel="noopener noreferrer">
+                <img src="../assets/x.png" alt="X" width="32" height="32">
+            </a>
+        </div>
+        &copy; 2025 EduClass.IQ
     </footer>
 </template>
 
 <style scoped>
-
-header, main, footer {
+header,
+main,
+footer {
     font-family: 'Poppins', sans-serif;
 }
 
@@ -83,12 +84,31 @@ nav ul li a {
     color: white;
     padding: 8px 12px;
     position: relative;
-    display: inline-block;
-    transition: transform 0.3s ease-in-out;
+    transition: all 0.3s ease;
 }
 
+/* Lift hover nav*/
 nav ul li a:hover {
-    transform: scale(1.07);
+    transform: translateY(-3px);
+}
+
+/* Underline effect */
+nav ul li a::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: #09D1C7;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+}
+
+nav ul li a:hover::before {
+    transform: scaleY(1);
 }
 
 
@@ -106,9 +126,9 @@ footer {
     text-align: center;
     padding: 1rem;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
-    gap: 1rem; 
+    gap: 1rem;
     color: white;
 }
 
@@ -129,7 +149,7 @@ footer a {
     align-items: center;
     text-decoration: none;
     color: white;
-    gap: 0.5rem; 
+    gap: 0.5rem;
 }
 
 footer img {
@@ -142,15 +162,15 @@ footer img {
 
 footer .social-links {
     display: flex;
-    gap: 1rem; 
+    gap: 1rem;
     justify-content: center;
 }
 
 footer .social-links img {
     width: 32px;
     height: 32px;
-        border: 2px solid white;
-    border-radius: 5px; 
+    border: 2px solid white;
+    border-radius: 5px;
     object-fit: cover;
 }
 

@@ -124,7 +124,7 @@
 
 /*Button by Gaurav-WebDev - https://uiverse.io/Gaurav-WebDev/tall-mayfly-60 */
 .button {
-  margin-bottom: 140px;
+  margin-bottom: 160px;
   margin-top: 25px;
   height: 50px;
   width: 200px;
