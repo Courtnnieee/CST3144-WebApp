@@ -1,5 +1,4 @@
 <script setup>
-const emit = defineEmits(['navigate'])
 </script>
 
 <template>
@@ -10,9 +9,9 @@ const emit = defineEmits(['navigate'])
                 <img src="../assets/Logo.png" alt="Logo" />
             </div>
             <ul>
-                <li><a href="#" @click.prevent="emit('navigate', 'welcome')">Home</a></li>
-        <li><a href="#" @click.prevent="emit('navigate', 'lesson')">Book Lessons</a></li>
-        <li><a href="#" @click.prevent="emit('navigate', 'checkout')">Checkout</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Book Lessons</a></li>
+                <li><a href="#">Checkout</a></li>
             </ul>
         </nav>
     </header>
