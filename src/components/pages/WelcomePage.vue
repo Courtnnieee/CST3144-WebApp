@@ -9,7 +9,7 @@
       <img src="../../assets/Logo.png" alt="EduClass Logo">
       <h1>EduClass.IQ</h1>
     </div>
-    <h2>Your After-School Learning Hub</h2>
+    <h2>Your After-School Activity Hub</h2>
     <h3>
       Discover and book lessons easily. Browse subjects, locations, and prices, add to cart, and
       <br></br>checkout in just a few clicks!

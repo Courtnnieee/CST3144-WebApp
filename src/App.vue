@@ -10,7 +10,6 @@ import CheckoutPage from './components/pages/CheckoutPage.vue'
 <template>
 <Layout> 
 <LessonPage></LessonPage>
-
 <!--<WelcomePage></WelcomePage> -->
 </Layout>
 </template>
