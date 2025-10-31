@@ -1,4 +1,4 @@
-<script setup>
+<script setup>;
 </script>
 
 <template>
@@ -9,15 +9,21 @@
                 <img src="../assets/Logo.png" alt="Logo" />
             </div>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Book Lessons</a></li>
-                <li><a href="#">Checkout</a></li>
+                <li>
+                    <router-link to="/">Home</router-link>
+                </li>
+                <li>
+                    <router-link to="/lessons">Lessons</router-link>
+                </li>
+                <li>
+                    <router-link to="/checkout">Checkout</router-link>
+                </li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <slot /> <!--content wrap -->
+        <router-view/> <!--content wrap -->
     </main>
 
     <footer>

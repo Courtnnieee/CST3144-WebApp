@@ -14,8 +14,13 @@
       Discover and book lessons easily. Browse subjects, locations, and prices, add to cart, and
       <br></br>checkout in just a few clicks!
     </h3>
-    <button class="button type1">
-      <span class="btn-txt">Book a lesson</span> </button>
+
+    <router-link to="/lessons" custom v-slot="{ navigate, href }">
+      <button class="button type1" @click="navigate">
+        <span class="btn-txt">Book a lesson</span>
+      </button>
+    </router-link>
+
   </div>
 
 

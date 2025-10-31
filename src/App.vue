@@ -8,11 +8,7 @@ import CheckoutPage from './views/CheckoutPage.vue'
 
 
 <template>
-<Layout> 
-<LessonPage></LessonPage>
-<!--<CheckoutPage></CheckoutPage> -->
-<!--<WelcomePage></WelcomePage> -->
-</Layout>
+<RouterView></RouterView>
 </template>
 
 <style scoped>
