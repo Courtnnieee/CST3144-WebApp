@@ -40,7 +40,7 @@
       <!-- Right Lesson Cards -->
       <section class="lessonCards">
         <div class="cards">
-          <img src="../../assets/maths.png" alt="Lesson Image" />
+          <img src="../assets/maths.png" alt="Lesson Image" />
           <h3>Subject: Math</h3>
           <h3>Location: Hendon</h3>
           <h3>Price: £50</h3>
@@ -49,7 +49,7 @@
         </div>
 
         <div class="cards">
-          <img src="../../assets/science.png" alt="Lesson Image" />
+          <img src="../assets/science.png" alt="Lesson Image" />
           <h3>Subject: Science</h3>
           <h3>Location: Brent Cross</h3>
           <h3>Price: £70</h3>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="cards">
-          <img src="../../assets/english.png" alt="Lesson Image" />
+          <img src="../assets/english.png" alt="Lesson Image" />
           <h3>Subject: English</h3>
           <h3>Location: Liverpool Street</h3>
           <h3>Price: £40</h3>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="cards">
-          <img src="../../assets/drama.png" alt="Lesson Image" />
+          <img src="../assets/drama.png" alt="Lesson Image" />
           <h3>Subject: Drama</h3>
           <h3>Location: Morden</h3>
           <h3>Price: £100</h3>

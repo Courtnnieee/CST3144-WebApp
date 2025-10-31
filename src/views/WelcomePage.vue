@@ -6,7 +6,7 @@
 
   <div class="centered-template">
     <div class="logo-title">
-      <img src="../../assets/Logo.png" alt="EduClass Logo">
+      <img src="../assets/Logo.png" alt="EduClass Logo">
       <h1>EduClass.IQ</h1>
     </div>
     <h2>Your After-School Activity Hub</h2>
@@ -33,7 +33,7 @@
         </p>
       </div>
       <div class="image-block">
-        <img src="../../assets/studystockimage.jpg" alt="Child learning">
+        <img src="../assets/studystockimage.jpg" alt="Child learning">
       </div>
     </div>
   </div>
@@ -44,28 +44,28 @@
     <div class="reccomendation-cards">
 
       <a href="https://www.uplearn.co.uk/" target="_blank" class="rec-card">
-        <img src="../../assets/UpLearn.jpg" alt="UpLearn" class="UpLearn-image">
+        <img src="../assets/UpLearn.jpg" alt="UpLearn" class="UpLearn-image">
         <p class="rec-name">Uplearn</p>
         <h4>Up Learn provides everything you need to get an A*/A at A Level in your subject, as efficiently as possible.
           No need for textbooks or tutors.</h4>
       </a>
 
       <a href="https://quizlet.com/" target="_blank" class="rec-card">
-        <img src="../../assets/Quizlet.png" alt="IXL" class="Quizlet-image">
+        <img src="../assets/Quizlet.png" alt="IXL" class="Quizlet-image">
         <p class="rec-name">Quizlet</p>
         <h4> Master whatever you’re learning with Quizlet’s interactive flashcards, practice tests, and study
           activities.</h4>
       </a>
 
       <a href="https://www.ixl.com/" target="_blank" class="rec-card">
-        <img src="../../assets/ixl.png" alt="IXL" class="IXL-image">
+        <img src="../assets/ixl.png" alt="IXL" class="IXL-image">
         <p class="rec-name">IXL Learning</p>
         <h4>IXL is personalised learning. With a comprehensive curriculum, individualised guidance and real-time
           analytics, IXL meets the unique needs of each learner.</h4>
       </a>
 
       <a href="https://www.khanacademy.org/" target="_blank" class="rec-card">
-        <img src="../../assets/khanacademy.png" alt="IXL" class="KhanAcademy-image">
+        <img src="../assets/khanacademy.png" alt="IXL" class="KhanAcademy-image">
         <p class="rec-name">Khan Academy</p>
         <h4> Khan Academy aims to provide a free and accessible education to everyone, regardless of their background or
           location.</h4>
