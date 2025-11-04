@@ -1,5 +1,5 @@
 <template>
-<h1 class="page-title">After School Class & Activities</h1>
+  <h1 class="page-title">After School Class & Activities</h1>
 
   <div class="page-container">
     <!-- Search Bar -->
@@ -10,77 +10,80 @@
     <div class="layout">
       <!-- Left Sidebar -->
       <aside class="sidebar">
-        <h4>Sort By</h4>
-        <div class="sort-by">
-          <label>
-            <input type="radio" name="sort-by" value="subject" checked /> Subject
-          </label><br />
-          <label>
-            <input type="radio" name="sort-by" value="price" /> Price
-          </label><br />
-          <label>
-            <input type="radio" name="sort-by" value="location" /> Location
-          </label><br />
-          <label>
-            <input type="radio" name="sort-by" value="availability" /> Availability
-          </label>
-        </div>
 
-        <h4>Order</h4>
-        <div class="order">
+        <div class="sort-container">
+          <h4>Sort Lessons By</h4>
+          <select v-model="sortAttribute">
+            <option disabled value="">Select</option>
+            <option value="subject">Subject</option>
+            <option value="location">Location</option>
+            <option value="price">Price</option>
+            <option value="space">Availability</option>
+          </select>
+
+          <h4>Order</h4>
           <label>
-            <input type="radio" name="order" value="asc" checked /> Ascending
-          </label><br />
-          <label>
-            <input type="radio" name="order" value="desc" /> Descending
+            <input type="radio" value="asc" v-model="sortOrder" /> Ascending
+            <input type="radio" value="desc" v-model="sortOrder" /> Descending
           </label>
+
         </div>
       </aside>
 
       <!-- Right Lesson Cards -->
       <section class="lessonCards">
-        <div class="cards">
-          <img src="../assets/maths.png" alt="Lesson Image" />
-          <h3>Subject: Math</h3>
-          <h3>Location: Hendon</h3>
-          <h3>Price: £50</h3>
-          <h3>Spaces Left: 3</h3>
-          <button class="add-btn">Add to Cart</button>
-        </div>
-
-        <div class="cards">
-          <img src="../assets/science.png" alt="Lesson Image" />
-          <h3>Subject: Science</h3>
-          <h3>Location: Brent Cross</h3>
-          <h3>Price: £70</h3>
-          <h3>Spaces Left: 5</h3>
-          <button class="add-btn">Add to Cart</button>
-        </div>
-
-        <div class="cards">
-          <img src="../assets/english.png" alt="Lesson Image" />
-          <h3>Subject: English</h3>
-          <h3>Location: Liverpool Street</h3>
-          <h3>Price: £40</h3>
-          <h3>Spaces Left: 2</h3>
-          <button class="add-btn">Add to Cart</button>
-        </div>
-
-        <div class="cards">
-          <img src="../assets/drama.png" alt="Lesson Image" />
-          <h3>Subject: Drama</h3>
-          <h3>Location: Morden</h3>
-          <h3>Price: £100</h3>
-          <h3>Spaces Left: 8</h3>
-          <button class="add-btn">Add to Cart</button>
-        </div>
+        <LessonCard v-for="(lesson, index) in lessons" :key="index" :lesson="lesson" />
       </section>
     </div>
   </div>
 </template>
 
 <script>
+import LessonCard from '../components/lessonCard.vue';
 
+export default {
+  name: 'App',
+  components: {
+    LessonCard
+  },
+  data() {
+    return {
+      lessons: [
+        {
+          subject: "Math",
+          location: "Hendon",
+          price: 95,
+          space: 5,
+          image: "Maths.png"
+        },
+
+        {
+          subject: "Biology",
+          location: "Brent Cross",
+          price: 70,
+          space: 5,
+          image: 'Biology.png'
+        },
+
+        {
+          subject: "English",
+          location: "Liverpool Street",
+          price: 40,
+          space: 5,
+          image: 'English.png'
+        },
+
+        {
+          subject: "Drama",
+          location: "Morden",
+          price: 100,
+          space: 8,
+          image: '/Drama.png'
+        }
+      ]
+    };
+  }
+};
 
 </script>
 
@@ -143,14 +146,8 @@
   font-weight: 600;
 }
 
-.sidebar label {
-  cursor: pointer;
-  font-size: 0.95rem;
-}
 
-.sidebar input[type="radio"] {
-  margin-right: 6px;
-}
+
 
 /* Lesson cards container */
 .lessonCards {
@@ -158,60 +155,5 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1rem;
-}
-
-/* Individual lesson card */
-.cards {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.cards:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.cards img {
-  width: 100%;
-  height: 150px;
-  object-fit:contain;
-  border-radius: 6px;
-  margin-bottom: 0.8rem;
-}
-
-.cards h3 {
-  margin: 0.3rem 0;
-  font-size: 0.95rem;
-  color: #333;
-}
-
-/* Add to cart button */
-.add-btn {
-  margin-top: 0.5rem;
-  padding: 0.6rem;
-  background-color: #09D1C7;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.add-btn:hover:not(:disabled) {
-  background-color: #0c6478;
-  transform: scale(1.03);
-}
-
-.add-btn:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
 }
 </style>

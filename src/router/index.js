@@ -9,17 +9,29 @@ const routes = [
     path: '/',
     component: Layout,
     children: [
-      { path: '', name: 'Welcome', component: WelcomePage },
-      { path: 'lessons', name: 'Lessons', component: LessonPage },
-      { path: 'checkout', name: 'Checkout', component: CheckoutPage }
+      {
+        path: '',
+        name: 'Welcome',
+        component: WelcomePage
+      },
+      {
+        path: 'lessons',
+        name: 'Lessons',
+        component: LessonPage
+      },
+      {
+        path: 'checkout',
+        name: 'Checkout',
+        component: CheckoutPage
+      }
     ]
   }
 ]
 
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
+  history: createWebHistory(),
+  routes
 })
 
 export default router
