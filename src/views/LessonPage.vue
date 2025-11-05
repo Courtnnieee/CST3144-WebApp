@@ -1,103 +1,98 @@
 <template>
-  <h1 class="page-title">After School Class & Activities</h1>
-
   <div class="page-container">
     <!-- Search Bar -->
     <div class="search-bar">
-      <input type="text" placeholder="Search lessons..." />
+      <input type="text" placeholder="🔍︎ Search" />
     </div>
 
     <div class="layout">
-      <!-- Left Sidebar -->
-      <aside class="sidebar">
+      <!-- Filters on top of cards -->
+      <div class="filters">
+        <!-- Sort controls -->
+        <select v-model="sortAttribute">
+          <option disabled value="">☰ Filter</option>
+          <option value="subject">Subject</option>
+          <option value="location">Location</option>
+          <option value="price">Price</option>
+        </select>
 
-        <div class="sort-container">
-          <h4>Sort Lessons By</h4>
-          <select v-model="sortAttribute">
-            <option disabled value="">Select</option>
-            <option value="subject">Subject</option>
-            <option value="location">Location</option>
-            <option value="price">Price</option>
-            <option value="space">Availability</option>
-          </select>
+        <select v-model="sortOrder">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
 
-          <h4>Order</h4>
-          <label>
-            <input type="radio" value="asc" v-model="sortOrder" /> Ascending
-            <input type="radio" value="desc" v-model="sortOrder" /> Descending
-          </label>
+        <!-- Availability filter -->
+        <select v-model="availability">
+          <option value="">All</option>
+          <option value="available">Available</option>
+          <option value="unavailable">Unavailable</option>
+        </select>
+      </div>
 
-        </div>
-      </aside>
 
-      <!-- Right Lesson Cards -->
+      <!-- Lesson cards -->
       <section class="lessonCards">
-        <LessonCard v-for="(lesson, index) in lessons" :key="index" :lesson="lesson" />
+        <LessonCard v-for="(lesson, index) in AllsortingFilters" 
+        :key="index" 
+        :lesson="lesson" 
+        />
       </section>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import LessonCard from '../components/lessonCard.vue';
+import { ref, onMounted, computed } from 'vue'
 
-export default {
-  name: 'App',
-  components: {
-    LessonCard
-  },
-  data() {
-    return {
-      lessons: [
-        {
-          subject: "Math",
-          location: "Hendon",
-          price: 95,
-          space: 5,
-          image: "Maths.png"
-        },
-
-        {
-          subject: "Biology",
-          location: "Brent Cross",
-          price: 70,
-          space: 5,
-          image: 'Biology.png'
-        },
-
-        {
-          subject: "English",
-          location: "Liverpool Street",
-          price: 40,
-          space: 5,
-          image: 'English.png'
-        },
-
-        {
-          subject: "Drama",
-          location: "Morden",
-          price: 100,
-          space: 8,
-          image: '/Drama.png'
-        }
-      ]
-    };
+//lessons array hook data to json
+const lessons = ref([])
+onMounted(async () => {
+  try {
+    const res = await fetch('http://localhost:3000/api/lessons')
+    const data = await res.json()
+    console.log('Lessons fetched:', data)
+    lessons.value = data
+  } catch (err) {
+    console.error('Failed to fetch lessons:', err)
   }
-};
+})
+
+
+//filter functionality
+const sortAttribute = ref('')
+const sortOrder = ref('asc')
+const availability = ref('')
+
+//lesson array filter sort
+const AllsortingFilters = computed(() => {
+  //availability
+  let filtered = lessons.value.filter(lesson => {
+    if (availability.value === 'available') return lesson.space > 0
+    if (availability.value === 'unavailable') return lesson.space === 0
+    return true
+  })
+
+  //sort
+  if (!sortAttribute.value) return filtered
+
+  return filtered.sort((a, b) => {
+    let valA = a[sortAttribute.value]
+    let valB = b[sortAttribute.value]
+
+    // Make string comparison case-insensitive
+    if (typeof valA === 'string') valA = valA.toLowerCase()
+    if (typeof valB === 'string') valB = valB.toLowerCase()
+
+    if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
+    if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
+    return 0
+  })
+})
 
 </script>
 
 <style scoped>
-.page-title {
-  text-align: center;
-  font-size: 2rem;
-  color: #09D1C7;
-  font-weight: 700;
-  margin: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
 /* General page layout */
 .page-container {
   font-family: Arial, sans-serif;
@@ -125,29 +120,42 @@ export default {
 /* Layout wrapper */
 .layout {
   display: flex;
+  flex-direction: column;
+  /* stack filters and cards vertically */
   gap: 1rem;
   padding: 0 1rem 2rem;
 }
 
-/* Sidebar styles */
-.sidebar {
-  flex: 0 0 220px;
-  padding: 1rem;
+.filters {
   background-color: #09D1C7;
   color: white;
+  padding: 1rem 1.5rem;
   border-radius: 8px;
-  height: fit-content;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  display: flex;          
+  flex-wrap: wrap;        
+  gap: 1rem;              
+  align-items: center;    
+  font-family: sans-serif;
 }
 
-.sidebar h4 {
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+/* dropdowns */
+.filters select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-
-
+.filters select:hover,
+.filters select:focus {
+  background-color: #0c6478; 
+  color: white;               
+  outline: none;              
+}
 
 /* Lesson cards container */
 .lessonCards {

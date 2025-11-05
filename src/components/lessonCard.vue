@@ -1,6 +1,6 @@
 <template>
   <div class="cards">
-    <img :src="lesson.image"/>
+     <img :src="`http://localhost:3000/images/${lesson.image}`" :alt="lesson.subject"/>
     <h2>{{ lesson.subject }}</h2>
     <h3> {{ lesson.location }}</h3>
     <p>£{{ lesson.price }}</p>
@@ -59,7 +59,7 @@ export default {
   color: #15919B;
 }
 
-/* Add to cart button */
+/* add to cart button */
 .add-btn {
   margin-top: 0.5rem;
   padding: 0.6rem;
