@@ -2,7 +2,7 @@
   <div class="page-container">
     <!-- Search Bar -->
     <div class="search-bar">
-      <input type="text" placeholder="🔍︎ Search" />
+      <input type="text" placeholder="🔍︎ Search" v-model="searchFilter" />
     </div>
 
     <div class="layout">
@@ -60,14 +60,28 @@ onMounted(async () => {
 
 
 //filter functionality
+const searchFilter = ref('')
 const sortAttribute = ref('')
 const sortOrder = ref('asc')
 const availability = ref('')
 
 //lesson array filter sort
 const AllsortingFilters = computed(() => {
+let filtered = lessons.value
+
+//search
+ if (searchFilter.value) {
+    const query = searchFilter.value.toLowerCase()
+    filtered = filtered.filter(lesson =>
+      lesson.subject.toLowerCase().includes(query) ||
+      lesson.location.toLowerCase().includes(query) ||
+      String(lesson.price).includes(query) ||
+      String(lesson.space).includes(query)
+    )
+  }
+
   //availability
-  let filtered = lessons.value.filter(lesson => {
+ filtered = filtered.filter(lesson => {
     if (availability.value === 'available') return lesson.space > 0
     if (availability.value === 'unavailable') return lesson.space === 0
     return true
@@ -89,6 +103,8 @@ const AllsortingFilters = computed(() => {
     return 0
   })
 })
+
+
 
 </script>
 
