@@ -1,40 +1,55 @@
 <script setup>
+import { inject } from 'vue'
 
+//get the shared cart
+const cart = inject('cart')
+const cartActions = inject('cartActions')
 </script>
 
 <template>
-<div class="shopping-cart-container">
-  <h2>My Cart</h2>
+  <div class="shopping-cart-container">
+    <h2>Your Cart</h2>
 
-  <!-- Cart Items -->
-  <div class="cart-items">
-    <div class="cart-item">
-      <img src="../assets/maths.png" alt="Math" class="cart-item-img" />
-      <div class="cart-item-info">
-        <h3>Subject: Math</h3>
-        <p>Location: Hendon</p>
-        <p>Price: £50</p>
+    <div v-if="cart.length === 0" class="empty-cart">
+      Looks like your cart is empty right now
+    </div>
+
+    <!--Cart items-->
+    <div v-else>
+      <div class="cart-items">
+        <transition-group name="fade" tag="div">
+          <div v-for="(item, index) in cart" :key="item._id" class="cart-item">
+            <img :src="`http://localhost:3000/images/${item.image}`" />
+            <div class="cart-item-info">
+              <h3>Subject: {{ item.subject }}</h3>
+              <p>Location: {{ item.location }}</p>
+              <p>Price: £{{ item.price }}</p>
+            </div>
+            <button class="remove-btn" @click="cartActions.removeFromCart(index)">
+              Remove
+            </button>
+          </div>
+        </transition-group>
       </div>
-      <button class="remove-btn">Remove</button>
+
+      <!--Checkout Form -->
+      <div class="checkout-form">
+        <h3>Checkout</h3>
+        <form>
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Enter your name" />
+
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="Enter your phone number" />
+
+          <button type="submit" class="book-btn">Book</button>
+        </form>
+      </div>
     </div>
   </div>
 
-  <!-- Checkout Form -->
-  <div class="checkout-form">
-    <h3>Checkout</h3>
-    <form>
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="Enter your name" />
-
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" placeholder="Enter your phone number" />
-
-      <button type="submit" class="book-btn">Book</button>
-    </form>
-  </div>
-</div>
-
 </template>
+
 
 <style scoped>
 .shopping-cart-container {
@@ -44,9 +59,13 @@
   font-family: Arial, sans-serif;
 }
 
+/* Cart page title */
 .shopping-cart-container h2 {
+  font-size: 40px;
+  font-weight: lighter;
+  margin: 0;
   text-align: center;
-  color: #09d1c7;
+  color: #ffffff;
   margin-bottom: 1.5rem;
 }
 
@@ -63,15 +82,19 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.cart-item-img {
+.cart-item img {
   width: 80px;
   height: 80px;
   object-fit: contain;
   border-radius: 6px;
   margin-right: 1rem;
+}
+
+.cart-item-info {
+  flex: 1;
 }
 
 .cart-item-info h3 {
@@ -103,15 +126,16 @@
 .checkout-form {
   margin-top: 2rem;
   background-color: #ffffff;
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 8px;
   border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .checkout-form h3 {
   margin-bottom: 1rem;
   color: #09d1c7;
+  font-size: 1.5rem;
 }
 
 .checkout-form form {
@@ -147,5 +171,33 @@
 .book-btn:hover {
   background-color: #0c6478;
   transform: scale(1.02);
+}
+
+/* Empty cart message */
+.empty-cart {
+  text-align: center;
+  color: #0c6478;
+  font-size: 1.4rem;
+  padding: 3rem 1rem;
+  font-weight: 500;
+  background-color: #ffffff;
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+@media (max-width: 600px) {
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cart-item img {
+    margin-bottom: 0.5rem;
+  }
+
+  .remove-btn {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
 }
 </style>

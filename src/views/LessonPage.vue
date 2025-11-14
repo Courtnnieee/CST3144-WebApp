@@ -29,12 +29,18 @@
         </select>
       </div>
 
+      <div v-if="showAddedMessage" class="added-message">
+  Added to cart!
+</div>
+
+
 
       <!-- Lesson cards -->
       <section class="lessonCards">
         <LessonCard v-for="(lesson, index) in AllsortingFilters" 
         :key="index" 
         :lesson="lesson" 
+        @add-to-cart="doAddCart"
         />
       </section>
     </div>
@@ -43,7 +49,7 @@
 
 <script setup>
 import LessonCard from '../components/lessonCard.vue';
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, inject } from 'vue'
 
 //lessons array hook data to json
 const lessons = ref([])
@@ -69,7 +75,7 @@ const availability = ref('')
 const AllsortingFilters = computed(() => {
 let filtered = lessons.value
 
-//search
+//search - case-insensitive
  if (searchFilter.value) {
     const query = searchFilter.value.toLowerCase()
     filtered = filtered.filter(lesson =>
@@ -104,7 +110,18 @@ let filtered = lessons.value
   })
 })
 
+//adding card to checkout page
+const addCardToCart = inject('cartActions')
+const showAddedMessage = ref(false)
 
+function doAddCart(lesson){
+  addCardToCart.addToCart(lesson)
+
+  showAddedMessage.value = true
+  setTimeout(() => {
+    showAddedMessage.value = false
+  }, 2000)
+}
 
 </script>
 
@@ -137,7 +154,6 @@ let filtered = lessons.value
 .layout {
   display: flex;
   flex-direction: column;
-  /* stack filters and cards vertically */
   gap: 1rem;
   padding: 0 1rem 2rem;
 }
@@ -180,4 +196,23 @@ let filtered = lessons.value
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1rem;
 }
+
+.added-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 20px 30px; 
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000;
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+
+
 </style>

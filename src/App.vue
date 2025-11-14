@@ -1,8 +1,17 @@
 <script setup>
-import Layout from './components/Layout.vue';
-import WelcomePage from './views/WelcomePage.vue';
-import LessonPage from './views/LessonPage.vue'
-import CheckoutPage from './views/CheckoutPage.vue'
+import { reactive, provide } from 'vue' //function sharing and reactive object/array
+
+const cart = reactive([])
+function addToCart(lesson) {
+  cart.push(lesson)
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1)
+}
+//injectable functions
+provide('cart', cart)
+provide('cartActions', { addToCart, removeFromCart })
 
 </script>
 

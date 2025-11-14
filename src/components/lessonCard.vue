@@ -1,11 +1,13 @@
 <template>
   <div class="cards">
-     <img :src="`http://localhost:3000/images/${lesson.image}`" :alt="lesson.subject"/>
+    <img :src="`http://localhost:3000/images/${lesson.image}`" :alt="lesson.subject" />
     <h2>{{ lesson.subject }}</h2>
     <h3> {{ lesson.location }}</h3>
     <p>£{{ lesson.price }}</p>
     <p>{{ lesson.space }} spaces left</p>
-    <button class="add-btn">Add to Cart</button>
+    <button class="add-btn" :disabled="lesson.space === 0" @click="addToCart">
+      {{ lesson.space === 0 ? 'This Lesson is Currently Full' : 'Add to Cart' }}
+    </button>
   </div>
 </template>
 
@@ -14,9 +16,16 @@
 export default {
   name: 'LessonCard',
   props: {
-    lesson: {
-      type: Object,
-      required: true
+    lesson: Object
+  },
+  emits: ['add-to-cart'],
+  methods: {
+    addToCart() {
+      if (this.lesson.space > 0) { //no below 0
+        this.$emit('add-to-cart', this.lesson)
+        this.lesson.space -= 1 //minus 1 when added cart
+      }
+
     }
   }
 }
@@ -24,7 +33,6 @@ export default {
 
 
 <style scoped>
-
 /* Individual lesson card */
 .cards {
   background-color: #ffffff;
