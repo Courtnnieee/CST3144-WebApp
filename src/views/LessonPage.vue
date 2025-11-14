@@ -30,18 +30,15 @@
       </div>
 
       <div v-if="showAddedMessage" class="added-message">
-  Added to cart!
-</div>
-
-
+        Added to cart!
+      </div>
 
       <!-- Lesson cards -->
       <section class="lessonCards">
         <LessonCard v-for="(lesson, index) in AllsortingFilters" 
         :key="index" 
-        :lesson="lesson" 
-        @add-to-cart="doAddCart"
-        />
+        :lesson="lesson"
+        @add-to-cart="doAddCart" />
       </section>
     </div>
   </div>
@@ -73,10 +70,10 @@ const availability = ref('')
 
 //lesson array filter sort
 const AllsortingFilters = computed(() => {
-let filtered = lessons.value
+  let filtered = lessons.value
 
-//search - case-insensitive
- if (searchFilter.value) {
+  //search - case-insensitive
+  if (searchFilter.value) {
     const query = searchFilter.value.toLowerCase()
     filtered = filtered.filter(lesson =>
       lesson.subject.toLowerCase().includes(query) ||
@@ -87,7 +84,7 @@ let filtered = lessons.value
   }
 
   //availability
- filtered = filtered.filter(lesson => {
+  filtered = filtered.filter(lesson => {
     if (availability.value === 'available') return lesson.space > 0
     if (availability.value === 'unavailable') return lesson.space === 0
     return true
@@ -100,7 +97,7 @@ let filtered = lessons.value
     let valA = a[sortAttribute.value]
     let valB = b[sortAttribute.value]
 
-    // Make string comparison case-insensitive
+    //Make string comparison case-insensitive
     if (typeof valA === 'string') valA = valA.toLowerCase()
     if (typeof valB === 'string') valB = valB.toLowerCase()
 
@@ -114,7 +111,7 @@ let filtered = lessons.value
 const addCardToCart = inject('cartActions')
 const showAddedMessage = ref(false)
 
-function doAddCart(lesson){
+function doAddCart(lesson) {
   addCardToCart.addToCart(lesson)
 
   showAddedMessage.value = true
@@ -165,10 +162,10 @@ function doAddCart(lesson){
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
-  display: flex;          
-  flex-wrap: wrap;        
-  gap: 1rem;              
-  align-items: center;    
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
   font-family: sans-serif;
 }
 
@@ -184,9 +181,9 @@ function doAddCart(lesson){
 
 .filters select:hover,
 .filters select:focus {
-  background-color: #0c6478; 
-  color: white;               
-  outline: none;              
+  background-color: #0c6478;
+  color: white;
+  outline: none;
 }
 
 /* Lesson cards container */
@@ -204,11 +201,11 @@ function doAddCart(lesson){
   transform: translate(-50%, -50%);
   background-color: #4caf50;
   color: white;
-  padding: 20px 30px; 
+  padding: 20px 30px;
   font-size: 1.5rem;
   font-weight: bold;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   text-align: center;
   transition: opacity 0.3s ease;

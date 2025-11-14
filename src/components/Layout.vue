@@ -3,7 +3,6 @@ import { inject } from 'vue'
 
 //get the shared cart
 const cart = inject('cart')
-const cartActions = inject('cartActions')
 
 </script>
 
@@ -38,7 +37,7 @@ const cartActions = inject('cartActions')
         <h1>Your After-School Learning Hub</h1>
         <h2>Contact us at</h2>
         <a href="https://github.com/Courtnnieee" target="_blank">
-            <img alt="pfp" src="https://avatars.githubusercontent.com/u/159250861?v=4"></img>
+            <img alt="pfp" src="../assets/Github.png"></img>
             <p>Courtnnieee</p>
         </a>
         <p>Find us in social media</p>
@@ -48,7 +47,7 @@ const cartActions = inject('cartActions')
             </a>
 
             <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-                <img src="../assets/Facebook.webp" alt="Facebook" width="32" height="32">
+                <img src="../assets/Facebook.png" alt="Facebook" width="32" height="32">
             </a>
 
             <a href="https://x.com/?lang=en" target="_blank" rel="noopener noreferrer">

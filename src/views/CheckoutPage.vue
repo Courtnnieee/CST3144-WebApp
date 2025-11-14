@@ -80,6 +80,7 @@ const cartActions = inject('cartActions')
   align-items: center;
   background-color: #ffffff;
   border: 1px solid #ddd;
+  margin-bottom: 10px;
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);

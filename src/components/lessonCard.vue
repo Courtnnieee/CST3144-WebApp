@@ -21,14 +21,10 @@ export default {
   emits: ['add-to-cart'],
   methods: {
     addToCart() {
-      if (this.lesson.space > 0) { //no below 0
         this.$emit('add-to-cart', this.lesson)
-        this.lesson.space -= 1 //minus 1 when added cart
       }
-
     }
   }
-}
 </script>
 
 
