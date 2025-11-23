@@ -38,8 +38,7 @@
 
       <!-- Lesson cards -->
       <section class="lessonCards">
-        <LessonCard v-for="(lesson, index) in AllsortingFilters" :key="index" :lesson="lesson"
-          @add-to-cart="doAddCart" />
+        <LessonCard v-for="lesson in AllsortingFilters" :key="lesson._id" :lesson="lesson" @add-to-cart="doAddCart" />
       </section>
     </div>
   </div>
@@ -47,22 +46,10 @@
 
 <script setup>
 import LessonCard from '../components/lessonCard.vue';
-import { ref, onMounted, computed, inject } from 'vue'
+import { ref, computed, inject } from 'vue'
 
 //lessons data
-const lessons = ref([])
-
-//fetch+mount cards
-onMounted(async () => {
-  try {
-    const res = await fetch('http://localhost:3000/api/lessons')
-    const data = await res.json()
-    console.log('Lessons fetched:', data)
-    lessons.value = data
-  } catch (err) {
-    console.error('Failed to fetch lessons:', err)
-  }
-})
+const lessons = inject('lessons')//reactive lessons share across pages
 
 
 //filter functionality
@@ -71,33 +58,33 @@ const sortAttribute = ref('')
 const sortOrder = ref('asc')
 const availability = ref('')
 
-
-//search backend
 async function doSearch() {
-  if (!searchFilter.value) {
-    const res = await fetch('http://localhost:3000/api/lessons')
-    lessons.value = await res.json()
-    return
-  }
-
   try {
-   const res = await fetch(`http://localhost:3000/api/lessons/search?q=${searchFilter.value}`)
-
-    const data = await res.json()
-    lessons.value = data.data
+    let data
+    if (!searchFilter.value) {
+      const res = await fetch('http://localhost:3000/api/lessons')
+      data = await res.json()
+    } else {
+      const res = await fetch(`http://localhost:3000/api/lessons/search?q=${searchFilter.value}`)
+      const resData = await res.json()
+      data = resData.data
+    }
+    // Update reactive lessons array without replacing the reference
+    lessons.splice(0, lessons.length, ...data)//update array
   } catch (err) {
-    console.error('Search has failed:', err)
+    console.error('Search failed:', err)
   }
 }
 
+
 //filter sort
 const AllsortingFilters = computed(() => {
-  let filtered = lessons.value
+  let filtered = lessons
 
   //availability
-  filtered = filtered.filter(lesson => {
-    if (availability.value === 'available') return lesson.space > 0
-    if (availability.value === 'unavailable') return lesson.space === 0
+  filtered = filtered.filter(l => {
+    if (availability.value === 'available') return l.space > 0
+    if (availability.value === 'unavailable') return l.space === 0
     return true
   })
 
@@ -124,6 +111,7 @@ const showAddedMessage = ref(false)
 
 function doAddCart(lesson) {
   addCardToCart.addToCart(lesson)
+  console.log('Adding lesson to cart:', lesson)
 
   showAddedMessage.value = true
   setTimeout(() => {

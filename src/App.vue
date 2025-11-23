@@ -1,7 +1,20 @@
 <script setup>
 import { reactive, provide, onMounted } from 'vue' //function sharing and reactive object/array
 
+const lessons = reactive([])//shared
 const cart = reactive([])
+
+//fetch+mount cards
+onMounted(async () => {
+  try {
+    const res = await fetch('http://localhost:3000/api/lessons')
+    const data = await res.json()
+    lessons.push(...data)//array
+  } catch (err) {
+    console.error('Failed to fetch lessons:', err)
+  }
+})
+
 function addToCart(lesson) {
   if (lesson.space > 0) { //bigger than 0
     cart.push(lesson)
@@ -18,6 +31,7 @@ function removeFromCart(index) {
 }
 
 //injectable functions
+provide('lessons', lessons)
 provide('cart', cart)
 provide('cartActions', { addToCart, removeFromCart })
 

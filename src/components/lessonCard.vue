@@ -16,15 +16,20 @@
 export default {
   name: 'LessonCard',
   props: {
-    lesson: Object
+    lesson: {
+      type: Object,
+      required: true
+    }
   },
   emits: ['add-to-cart'],
   methods: {
     addToCart() {
+      if (this.lesson.space > 0) { //spaces ->add to cart +data
         this.$emit('add-to-cart', this.lesson)
       }
     }
   }
+}
 </script>
 
 
@@ -83,7 +88,7 @@ export default {
 .add-btn {
   margin-top: 0.5rem;
   padding: 0.6rem;
-   background: linear-gradient(135deg, #09D1C7 0%, #0ab3aa 100%);
+  background: linear-gradient(135deg, #09D1C7 0%, #0ab3aa 100%);
   color: white;
   border: none;
   border-radius: 8px;
