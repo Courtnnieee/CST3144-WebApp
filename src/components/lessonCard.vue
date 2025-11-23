@@ -63,26 +63,53 @@ export default {
   color: #15919B;
 }
 
+.cards h3::before {
+  content: "📍";
+  font-size: 0.9rem;
+}
+
+.cards p:last-of-type {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #f0f9f9;
+  border-radius: 6px;
+  display: inline-block;
+  width: fit-content;
+}
+
 /* add to cart button */
 .add-btn {
   margin-top: 0.5rem;
   padding: 0.6rem;
-  background-color: #09D1C7;
+   background: linear-gradient(135deg, #09D1C7 0%, #0ab3aa 100%);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.3s ease, transform 0.1s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(9, 209, 199, 0.3);
 }
 
 .add-btn:hover:not(:disabled) {
-  background-color: #0c6478;
-  transform: scale(1.03);
+  background: linear-gradient(135deg, #0c6478 0%, #094e5e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(12, 100, 120, 0.4);
+}
+
+.add-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .add-btn:disabled {
-  background-color: #aaa;
+  background: linear-gradient(135deg, #d4d4d4 0%, #b8b8b8 100%);
   cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+  font-size: 0.9rem;
+  color: #666;
 }
 </style>

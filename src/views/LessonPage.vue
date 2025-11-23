@@ -2,8 +2,9 @@
   <div class="page-container">
     <!-- Search Bar -->
     <div class="search-bar">
-      <input type="text" placeholder="🔍︎ Search" v-model="searchFilter" />
+      <input type="text" placeholder="🔍︎ Search" v-model="searchFilter" @input="doSearch" />
     </div>
+
 
     <div class="layout">
       <!-- Filters on top of cards -->
@@ -30,15 +31,15 @@
       </div>
 
       <div v-if="showAddedMessage" class="added-message">
-        Added to cart!
+        <div class="checkmark">&#10004;</div>
+        Added to cart
       </div>
+
 
       <!-- Lesson cards -->
       <section class="lessonCards">
-        <LessonCard v-for="(lesson, index) in AllsortingFilters" 
-        :key="index" 
-        :lesson="lesson"
-        @add-to-cart="doAddCart" />
+        <LessonCard v-for="(lesson, index) in AllsortingFilters" :key="index" :lesson="lesson"
+          @add-to-cart="doAddCart" />
       </section>
     </div>
   </div>
@@ -48,8 +49,10 @@
 import LessonCard from '../components/lessonCard.vue';
 import { ref, onMounted, computed, inject } from 'vue'
 
-//lessons array hook data to json
+//lessons data
 const lessons = ref([])
+
+//fetch+mount cards
 onMounted(async () => {
   try {
     const res = await fetch('http://localhost:3000/api/lessons')
@@ -68,20 +71,28 @@ const sortAttribute = ref('')
 const sortOrder = ref('asc')
 const availability = ref('')
 
-//lesson array filter sort
+
+//search backend
+async function doSearch() {
+  if (!searchFilter.value) {
+    const res = await fetch('http://localhost:3000/api/lessons')
+    lessons.value = await res.json()
+    return
+  }
+
+  try {
+   const res = await fetch(`http://localhost:3000/api/lessons/search?q=${searchFilter.value}`)
+
+    const data = await res.json()
+    lessons.value = data.data
+  } catch (err) {
+    console.error('Search has failed:', err)
+  }
+}
+
+//filter sort
 const AllsortingFilters = computed(() => {
   let filtered = lessons.value
-
-  //search - case-insensitive
-  if (searchFilter.value) {
-    const query = searchFilter.value.toLowerCase()
-    filtered = filtered.filter(lesson =>
-      lesson.subject.toLowerCase().includes(query) ||
-      lesson.location.toLowerCase().includes(query) ||
-      String(lesson.price).includes(query) ||
-      String(lesson.space).includes(query)
-    )
-  }
 
   //availability
   filtered = filtered.filter(lesson => {
@@ -199,17 +210,54 @@ function doAddCart(lesson) {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #4caf50;
-  color: white;
-  padding: 20px 30px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: white;
+  color: #222;
+  padding: 1.4rem 2.2rem;
+  border-radius: 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
   z-index: 1000;
   text-align: center;
-  transition: opacity 0.3s ease;
+  opacity: 0;
+  animation: fadePop 1.9s ease forwards;
 }
 
+.checkmark {
+  font-size: 2rem;
+  color: #37c46c;
+  margin-bottom: 0.4rem;
+  animation: popScale 0.4s ease;
+}
 
+@keyframes fadePop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
+}
+
+@keyframes popScale {
+  0% {
+    transform: scale(0.6);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
 </style>
