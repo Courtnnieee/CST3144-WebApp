@@ -1,9 +1,54 @@
 <script setup>
-import { inject } from 'vue'
+import { inject, ref, computed } from 'vue'
 
 //get the shared cart
 const cart = inject('cart')
 const cartActions = inject('cartActions')
+
+//checkout details
+const name = ref('')
+const phone = ref('')
+const orderMessage = ref('')
+
+
+function nameValidation() {
+  return /^[A-Za-z\s]+$/.test(name.value)//regex letters+space
+}
+
+function phoneValidation() {
+  return /^[0-9]+$/.test(phone.value)
+}
+
+const canCheckout = computed(() => {
+  return nameValidation() && phoneValidation() && cart.length > 0
+})
+
+async function submitOrder() {
+  if (!canCheckout) return
+
+  try {
+    for (const lesson of cart) {
+      //post order
+      await fetch('http://localhost:3000/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lessonID: lesson._id, name: name.value, phone: phone.value })
+      })
+
+      //update lesson space
+      await fetch(`http://localhost:3000/api/lessons/${lesson._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newSpace: lesson.space })
+      })
+    }
+    orderMessage.value = 'Your order has been submitted. Thank you for booking!'
+    cart.splice(0)
+  } catch (err) {
+    console.error(err)
+    orderMessage.value = 'Unable to submit order. Try again to reorder your booking.'
+  }
+}
 </script>
 
 <template>
@@ -34,18 +79,17 @@ const cartActions = inject('cartActions')
 
       <!--Checkout Form -->
       <div class="checkout-form">
-        <h3>Checkout</h3>
-        <form>
-          <label for="name">Name</label>
-          <input type="text" id="name" placeholder="Enter your name" />
+        <form @submit.prevent="submitOrder">
+          <label>Name</label>
+          <input v-model="name" placeholder="Enter your name" />
+          <label>Phone</label>
+          <input v-model="phone" placeholder="Enter your phone" />
 
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" placeholder="Enter your phone number" />
-
-          <button type="submit" class="book-btn">Book</button>
+         <button type="submit" :disabled="!canCheckout">Checkout</button>
         </form>
       </div>
     </div>
+    <div v-if="orderMessage">{{ orderMessage }}</div>
   </div>
 
 </template>
