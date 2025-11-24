@@ -21,7 +21,8 @@ const cart = inject('cart')
                     <router-link to="/lessons">Lessons</router-link>
                 </li>
                 <li>
-                    <router-link to="/checkout">Checkout
+                    <router-link to="/checkout" :class="{ disabled: cart.length === 0 }"
+                        :tabindex="cart.length === 0 ? -1 : 0">Checkout
                         <span v-if="cart.length" class="cart-badge">{{ cart.length }}</span>
                     </router-link>
                 </li>
@@ -187,18 +188,24 @@ footer .social-links img {
 }
 
 .cart-badge {
-  display: inline-block;
-  background-color: #09D1C7;
-  color: white;
-  font-size: 0.8rem;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 12px;
-  margin-left: 6px;
-  min-width: 20px;
-  text-align: center;
-  line-height: 1.2;        
-  vertical-align: middle;  
+    display: inline-block;
+    background-color: #09D1C7;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 12px;
+    margin-left: 6px;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Responsive */
