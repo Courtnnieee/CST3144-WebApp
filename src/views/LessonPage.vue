@@ -1,48 +1,57 @@
 <template>
   <div class="page-container">
-    <!-- Search Bar -->
-    <div class="search-bar">
-      <input type="text" placeholder="🔍︎ Search" v-model="searchFilter" @input="doSearch" />
-    </div>
+<!-- Top image/banner -->
+  <div class="page-banner">
+    <img src="../assets/bookl.png" alt="Books Banner">
+  </div>
 
-
-    <div class="layout">
-      <!-- Filters on top of cards -->
-      <div class="filters">
-        <!-- Sort controls -->
-        <select v-model="sortAttribute">
-          <option disabled value="">☰ Filter</option>
-          <option value="subject">Subject</option>
-          <option value="location">Location</option>
-          <option value="price">Price</option>
-        </select>
-
-        <select v-model="sortOrder">
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
-
-        <!-- Availability filter -->
-        <select v-model="availability">
-          <option value="">All</option>
-          <option value="available">Available</option>
-          <option value="unavailable">Unavailable</option>
-        </select>
+    <!-- search Bar -->
+    <div class="search-filter-card">
+      <div class="search-wrapper">
+        <input type="text" placeholder="🔍︎ Search lessons..." v-model="searchFilter" @input="doSearch" />
       </div>
 
-      <div v-if="showAddedMessage" class="added-message">
-        <div class="checkmark">&#10004;</div>
-        Added to cart
+      <!-- sort by -->
+      <div class="filters-wrapper">
+        <div class="filter-group">
+          <label>Sort by:</label>
+          <select v-model="sortAttribute">
+            <option disabled value="">Select</option>
+            <option value="subject">Subject</option>
+            <option value="location">Location</option>
+            <option value="price">Price</option>
+          </select>
+
+          <select v-model="sortOrder">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Availability:</label>
+          <select v-model="availability">
+            <option value="">All</option>
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+          </select>
+        </div>
       </div>
-
-
-      <!-- Lesson cards -->
-      <section class="lessonCards">
-        <LessonCard v-for="lesson in AllsortingFilters" :key="lesson._id" :lesson="lesson" @add-to-cart="doAddCart" />
-      </section>
     </div>
+
+    <!-- message -->
+    <div v-if="showAddedMessage" class="added-message">
+      <div class="checkmark">&#10004;</div>
+      Added to cart
+    </div>
+
+    <!-- Lesson cards -->
+    <section class="lessonCards">
+      <LessonCard v-for="lesson in AllsortingFilters" :key="lesson._id" :lesson="lesson" @add-to-cart="doAddCart" />
+    </section>
   </div>
 </template>
+
 
 <script setup>
 import LessonCard from '../components/lessonCard.vue';
@@ -118,93 +127,133 @@ function doAddCart(lesson) {
     showAddedMessage.value = false
   }, 2000)
 }
-
 </script>
 
 <style scoped>
-/* General page layout */
+/* Page container */
 .page-container {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff75;
-  border-radius: 8px;
-  margin-bottom: 10rem;
+  font-family: 'Inter', sans-serif;
+  background-color: #f7f9fc;
+  border-radius: 12px;
+  margin: 2rem auto 10rem;
+  padding: 1rem;
+  max-width: 1200px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.page-banner {
+  width: 100%;
+  max-height: 280px;
+  overflow: hidden;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.page-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 16px;
+  transition: transform 0.4s ease;
+}
+
+.page-banner img:hover {
+  transform: scale(1.03);
+}
+
+.search-filter-card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
 }
 
 /* Search bar */
-.search-bar {
-  text-align: center;
-  padding: 1rem;
-}
-
-.search-bar input {
-  width: 50%;
-  max-width: 400px;
-  padding: 0.6rem;
-  border: 3px solid #09D1C7;
-  border-radius: 20px;
+.search-wrapper input {
+  width: 97%;
+  padding: 0.8rem 1rem;
+  border-radius: 30px;
+  border: 2px solid #ccc;
   font-size: 1rem;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
-/* Layout wrapper */
-.layout {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 0 1rem 2rem;
+.search-wrapper input:focus {
+  border-color: #06a89a;
+  box-shadow: 0 2px 12px rgba(9, 209, 199, 0.3);
+  outline: none;
 }
 
-.filters {
-  background-color: #09D1C7;
-  color: white;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-
+.filters-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1rem 2rem;
+  justify-content: flex-start;
+}
+
+.filter-group {
+  display: flex;
   align-items: center;
-  font-family: sans-serif;
+  gap: 0.6rem;
+  font-weight: 500;
+  color: #333;
 }
 
-/* dropdowns */
-.filters select {
-  padding: 0.4rem 0.6rem;
-  border-radius: 4px;
-  border: none;
-  font-size: 1rem;
+.filter-group label {
+  font-size: 0.95rem;
+}
+
+/* Filter selects */
+.filter-group select {
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.filters select:hover,
-.filters select:focus {
-  background-color: #0c6478;
-  color: white;
+.filter-group select:hover,
+.filter-group select:focus {
+  border-color: #09d1c7;
   outline: none;
+  box-shadow: 0 2px 8px rgba(9, 209, 199, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filters-wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
 
 /* Lesson cards container */
 .lessonCards {
-  flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
 }
 
+/* Added-to-cart message */
 .added-message {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background: #fff;
   color: #222;
-  padding: 1.4rem 2.2rem;
-  border-radius: 16px;
+  padding: 1.5rem 2.5rem;
+  border-radius: 18px;
   font-size: 1.2rem;
   font-weight: 600;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   text-align: center;
   opacity: 0;
@@ -212,9 +261,9 @@ function doAddCart(lesson) {
 }
 
 .checkmark {
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #37c46c;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   animation: popScale 0.4s ease;
 }
 
@@ -247,5 +296,14 @@ function doAddCart(lesson) {
   100% {
     transform: scale(1);
   }
+}
+
+.lessonCards>* {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lessonCards>*:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 </style>

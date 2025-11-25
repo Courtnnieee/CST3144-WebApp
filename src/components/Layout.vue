@@ -3,7 +3,6 @@ import { inject } from 'vue'
 
 //get the shared cart
 const cart = inject('cart')
-
 </script>
 
 <template>
@@ -35,13 +34,13 @@ const cart = inject('cart')
     </main>
 
     <footer>
-        <h1>Your After-School Learning Hub</h1>
-        <h2>Contact us at</h2>
         <a href="https://github.com/Courtnnieee" target="_blank">
             <img alt="pfp" src="../assets/Github.png"></img>
             <p>Courtnnieee</p>
         </a>
+
         <p>Find us in social media</p>
+        
         <div class="social-links">
             <a href="https://www.linkedin.com/in/courtney-b-626b0a2b9/" target="_blank" rel="noopener noreferrer">
                 <img src="../assets/LinkedIn.png" alt="LinkedIn">
@@ -63,21 +62,34 @@ const cart = inject('cart')
 header,
 main,
 footer {
+    padding-top: 80px;
     font-family: 'Poppins', sans-serif;
 }
 
-/* Nav */
+/*nav */
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: none;
     padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 97%;
+    z-index: 1000;
 }
 
 .logo img {
     height: 50px;
     width: auto;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
 }
 
 nav ul {
@@ -94,36 +106,60 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: white;
+    color: rgb(0, 0, 0);
     padding: 8px 12px;
     position: relative;
     transition: all 0.3s ease;
 }
 
-/* Lift hover nav*/
 nav ul li a:hover {
     transform: translateY(-3px);
 }
 
-/* Underline effect */
 nav ul li a::before {
     content: "";
     position: absolute;
-    z-index: -1;
-    bottom: -1px;
     left: 0;
-    right: 0;
-    height: 5px;
-    background-color: #09D1C7;
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.3s ease;
+    bottom: -3px;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #09D1C7, #00F5FF);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s ease;
 }
 
 nav ul li a:hover::before {
-    transform: scaleY(1);
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
+.cart-badge {
+    background-color: #09D1C7;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 999px;
+    margin-left: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 12px rgba(9, 209, 199, 0.6);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+nav ul li a:hover .cart-badge {
+    transform: scale(1.2);
+    box-shadow: 0 0 18px rgba(9, 209, 199, 0.75);
+}
+
+/* Disabled checkout */
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
 /* Main content */
 main {
@@ -132,29 +168,24 @@ main {
     background: transparent;
 }
 
-
 /* Footer */
 footer {
     background: #030612;
     text-align: center;
-    padding: 1rem;
+    padding: 3rem 2rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
     color: white;
+    position: relative;
+    overflow: hidden;
 }
 
-footer h1 {
-    margin: 0;
-    font-size: 30px;
-    color: #09D1C7;
-}
-
-footer h2 {
-    margin: 0;
-    font-weight: lighter;
-    font-size: 1.5rem;
+footer p {
+    margin: 0.5rem 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
 }
 
 footer a {
@@ -162,50 +193,64 @@ footer a {
     align-items: center;
     text-decoration: none;
     color: white;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
+
+footer a:hover {
+    color: #09D1C7;
+    background: rgba(9, 209, 199, 0.1);
+    transform: translateY(-2px);
 }
 
 footer img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid white;
+    border: 2px solid rgba(9, 209, 199, 0.5);
     object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+footer a:hover img {
+    border-color: #09D1C7;
+    box-shadow: 0 0 15px rgba(9, 209, 199, 0.5);
+    transform: scale(1.1);
 }
 
 footer .social-links {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
     justify-content: center;
+    margin-top: 1rem;
+}
+
+footer .social-links a {
+    padding: 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
 footer .social-links img {
-    width: 32px;
-    height: 32px;
-    border: 2px solid white;
-    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
     object-fit: cover;
+    transition: all 0.3s ease;
 }
 
-.cart-badge {
-    display: inline-block;
-    background-color: #09D1C7;
-    color: white;
-    font-size: 0.8rem;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 12px;
-    margin-left: 6px;
-    min-width: 20px;
-    text-align: center;
-    line-height: 1.2;
-    vertical-align: middle;
+footer .social-links a:hover {
+    transform: translateY(-5px);
+    background: transparent;
 }
 
-.disabled {
-    pointer-events: none;
-    opacity: 0.5;
-    cursor: not-allowed;
+footer .social-links a:hover img {
+    border-color: #09D1C7;
+    box-shadow: 0 4px 20px rgba(9, 209, 199, 0.4);
+    transform: scale(1.1);
 }
 
 /* Responsive */

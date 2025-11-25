@@ -1,191 +1,227 @@
-<script setup>
-
-</script>
-
 <template>
-
   <div class="centered-template">
-    <div class="logo-title">
-      <img src="../assets/Logo.png" alt="EduClass Logo">
-      <h1>EduClass.IQ</h1>
-    </div>
-    <h2>Your After-School Activity Hub</h2>
-    <h3>
-      Discover and book lessons easily. Browse subjects, locations, and prices, add to cart, and
-      <br></br>checkout in just a few clicks!
-    </h3>
+    <img class="ombre-bg" src="../assets/Ombre background.png" alt="ombre background">
 
-    <router-link to="/lessons" custom v-slot="{ navigate, href }">
-      <button class="button type1" @click="navigate">
-        <span class="btn-txt">Book a lesson</span>
-      </button>
+    <h1 class="logo-title">Fun Learning One Click Away</h1>
+    <h3>Easily find and book after-school activities students will love. <br>
+      Discover classes and prices tailored to their interests—all in one place.</h3>
+
+    <router-link to="/lessons" custom v-slot="{ navigate }">
+      <button class="btn" @click="navigate">Book a lesson</button>
     </router-link>
-
   </div>
-
 
   <div class="section-container">
     <div class="section-content">
+
       <div class="text-block">
         <h1>Parents empower your kids</h1>
-        <h2>Enrolling your child in lessons helps them develop valuable skills, build confidence, and discover their
-          passions.</h2>
+
+        <h2>
+          Enrolling your child in lessons helps them develop valuable skills,
+          build confidence, and discover their passions.
+        </h2>
+
         <p>
-          Our platform offers a wide range of after-school classes and activities designed to spark curiosity, build
-          skills, and foster creativity.
-          With engaging lessons, expert instructors, and flexible scheduling, your child can explore new passions while
-          developing academically and socially.
+          Our platform offers a wide range of after-school classes designed to spark curiosity,
+          build skills, and foster creativity. With expert instructors and flexible scheduling,
+          your child can explore new passions while growing academically and socially.
         </p>
       </div>
+
       <div class="image-block">
         <img src="../assets/studystockimage.jpg" alt="Child learning">
       </div>
+
     </div>
   </div>
+
 
 
   <div class="reccomendation">
     <h2>Recommended Education Websites for Students</h2>
+
     <div class="reccomendation-cards">
 
       <a href="https://www.uplearn.co.uk/" target="_blank" class="rec-card">
-        <img src="../assets/UpLearn.jpg" alt="UpLearn" class="UpLearn-image">
+        <img src="../assets/UpLearn.jpg" alt="UpLearn">
         <p class="rec-name">Uplearn</p>
         <h4>Up Learn provides everything you need to get an A*/A at A Level in your subject, as efficiently as possible.
           No need for textbooks or tutors.</h4>
       </a>
 
       <a href="https://quizlet.com/" target="_blank" class="rec-card">
-        <img src="../assets/Quizlet.png" alt="IXL" class="Quizlet-image">
+        <img src="../assets/Quizlet.png" alt="Quizlet">
         <p class="rec-name">Quizlet</p>
-        <h4> Master whatever you’re learning with Quizlet’s interactive flashcards, practice tests, and study
-          activities.</h4>
+        <h4>Master whatever you’re learning with Quizlet’s interactive flashcards, practice tests, and study activities.
+        </h4>
       </a>
 
       <a href="https://www.ixl.com/" target="_blank" class="rec-card">
-        <img src="../assets/ixl.png" alt="IXL" class="IXL-image">
+        <img src="../assets/ixl.png" alt="IXL">
         <p class="rec-name">IXL Learning</p>
-        <h4>IXL is personalised learning. With a comprehensive curriculum, individualised guidance and real-time
-          analytics, IXL meets the unique needs of each learner.</h4>
+        <h4>IXL is personalised learning with a comprehensive curriculum, individual guidance, and real-time analytics.
+        </h4>
       </a>
 
       <a href="https://www.khanacademy.org/" target="_blank" class="rec-card">
-        <img src="../assets/khanacademy.png" alt="IXL" class="KhanAcademy-image">
+        <img src="../assets/khanacademy.png" alt="Khan Academy">
         <p class="rec-name">Khan Academy</p>
-        <h4> Khan Academy aims to provide a free and accessible education to everyone, regardless of their background or
-          location.</h4>
+        <h4>Khan Academy offers a free, world-class education to anyone, anywhere.</h4>
       </a>
+
     </div>
   </div>
-
 </template>
 
 <style scoped>
 .centered-template {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  gap: 10px;
-  color: white;
-  padding: 50px;
+  min-height: 80vh;
+  padding: 2rem 2rem 3rem;
+  transform: translateY(-40px);
 }
 
-.logo-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  /* spacing between image and h1 */
-}
-
-.logo-title img {
-  height: 100px;
-  object-fit: contain;
-}
-
-.centered-template h1 {
-  font-size: 80px;
-  margin: 0;
-  font-family: 'Quicksand', sans-serif;
-  background: linear-gradient(135deg, white 20%, grey 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.centered-template h2 {
-  font-size: 40px;
-  font-weight: lighter;
-  margin: 0;
-}
-
-.centered-template h3 {
-  font-family: 'Telegraf', sans-serif;
-  font-size: 20px;
-  font-weight: lighter;
-  margin: 0;
-  line-height: 1.8rem;
-}
-
-/*Button by Gaurav-WebDev - https://uiverse.io/Gaurav-WebDev/tall-mayfly-60 */
-.button {
-  margin-bottom: 160px;
-  margin-top: 25px;
-  height: 50px;
-  width: 200px;
-  position: relative;
-  background-color: transparent;
-  cursor: pointer;
-  border: 2px solid #09D1C7;
-  overflow: hidden;
-  border-radius: 30px;
-  color: #09D1C7;
-  transition: all 0.5s ease-in-out;
-}
-
-.btn-txt {
-  z-index: 1;
-  font-family: 'Telegraf', sans-serif;
-  font-size: 18px;
-}
-
-.type1::after {
-  content: "";
+/*background behind content */
+.ombre-bg {
   position: absolute;
-  left: 0;
-  top: 0;
-  transition: all 0.5s ease-in-out;
-  background-color: #09D1C7;
-  border-radius: 30px;
-  visibility: hidden;
-  height: 10px;
-  width: 10px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
 }
 
-.button:hover {
-  box-shadow: 1px 1px 200px #000;
+/* Headline */
+.centered-template h1 {
+  font-weight: 500;
+  font-size: 70px;
   color: #000;
-  border: none;
+  margin: 0;
+  line-height: 1.1;
 }
 
-.type1:hover::after {
-  visibility: visible;
-  transform: scale(100) translateX(2px);
+/* Subtitle */
+.centered-template h3 {
+  font-weight: 500;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 2rem 0 2rem;
 }
+
+/* Button */
+.btn {
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #09D1C7 0%, #0ab3aa 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(9, 209, 199, 0.3);
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #0c6478 0%, #094e5e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(12, 100, 120, 0.4);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* section */
+.section-container {
+  padding: 6rem 1rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.section-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+/* Text area */
+.text-block {
+  flex: 1;
+  min-width: 300px;
+}
+
+.text-block h1 {
+  font-size: 3rem;
+  color: #0c6478;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.text-block h2 {
+  font-size: 1.4rem;
+  color: #4a4a4a;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.text-block p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #5d5d5d;
+  max-width: 550px;
+}
+
+/* Image area */
+.image-block {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+}
+
+.image-block img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  object-fit: cover;
+}
+
+@media (max-width: 850px) {
+  .section-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .text-block p {
+    margin: auto;
+  }
+
+  .image-block img {
+    max-width: 330px;
+  }
+}
+
 
 /*Reccomendation */
 .reccomendation {
-  padding: 40px 20px;
+  margin-top: 6rem;
   text-align: center;
+  margin-bottom: 6rem;
 }
 
 .reccomendation h2 {
-  font-size: 40px;
-  color: #ffffff;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  font-weight: lighter;
+  font-size: 3rem;
+  color: #0c6478;
+  margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .reccomendation h4 {
@@ -236,61 +272,7 @@
 
 .rec-card h4 {
   font-size: 14px;
-  font-family: 'Telegraf', sans-serif;
   color: #5e5e5e;
   margin-bottom: 10px;
-}
-
-/*Section */
-.section-container {
-  padding: 40px;
-  display: flex;
-  justify-content: center;
-  background-color: #0b1a2b90;
-}
-
-.section-content {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  max-width: 1200px;
-}
-
-.text-block {
-  flex: 1;
-}
-
-.text-block h1 {
-  font-size: 48px;
-  margin-bottom: 10px;
-  color: #09D1C7;
-  font-weight: lighter;
-}
-
-.text-block h2 {
-  font-size: 22px;
-  color: #ffffff;
-  margin-bottom: 20px;
-  font-weight: lighter;
-}
-
-.text-block p {
-  font-family: 'Telegraf', sans-serif;
-  font-size: 18px;
-  line-height: 1.6;
-  color: #fff;
-}
-
-.image-block {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
-.image-block img {
-  width: 100%;
-  height: auto;
-  border-radius: 20px;
-  object-fit: cover;
 }
 </style>
