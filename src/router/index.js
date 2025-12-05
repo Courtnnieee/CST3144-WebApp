@@ -30,7 +30,7 @@ const routes = [
 
 
 const router = createRouter({
-  history: createWebHistory(/CST3144-WebApp/),
+  history: createWebHistory('/CST3144-WebApp/'),
   routes
 })
 
