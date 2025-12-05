@@ -4,5 +4,5 @@ import vue from '@vitejs/plugin-vue'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  publicPath:"/CST3144-WebApp/",
+  base: '/CST3144-WebApp/',
 })
