@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, provide, onMounted } from 'vue' //watches for changes in object/array,function/data sharing, add DOM
 
-const lessons = reactive([])//shared
+const lessons = reactive([])
 const cart = reactive([])
 
 //fetch+mount cards
@@ -16,7 +16,7 @@ onMounted(async () => {
 })
 
 function addToCart(lesson) {
-  if (lesson.space > 0) { //bigger than 0
+  if (lesson.space > 0) {
     cart.push(lesson)
     lesson.space -= 1 //minus 1 when added cart
   }
@@ -25,7 +25,7 @@ function addToCart(lesson) {
 function removeFromCart(index) {
   const lesson = cart[index]
   if (lesson) {
-    lesson.space += 1 //restore space when removed
+    lesson.space += 1 //restore space 
     cart.splice(index, 1)
   }
 }
@@ -34,7 +34,6 @@ function removeFromCart(index) {
 provide('lessons', lessons)
 provide('cart', cart)
 provide('cartActions', { addToCart, removeFromCart })
-
 </script>
 
 

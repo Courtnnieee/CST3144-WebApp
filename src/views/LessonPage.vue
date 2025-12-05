@@ -1,9 +1,8 @@
 <template>
   <div class="page-container">
-<!-- Top image/banner -->
-  <div class="page-banner">
-    <img src="../assets/bookl.png" alt="Books Banner">
-  </div>
+    <div class="page-banner">
+      <img src="../assets/bookl.png" alt="Books Banner">
+    </div>
 
     <!-- search Bar -->
     <div class="search-filter-card">
@@ -58,8 +57,7 @@ import LessonCard from '../components/lessonCard.vue';
 import { ref, computed, inject } from 'vue'
 
 //lessons data
-const lessons = inject('lessons')//reactive lessons share across pages
-
+const lessons = inject('lessons')
 
 //filter functionality
 const searchFilter = ref('')
@@ -78,7 +76,6 @@ async function doSearch() {
       const resData = await res.json()
       data = resData.data
     }
-    // Update reactive lessons array without replacing the reference
     lessons.splice(0, lessons.length, ...data)//update array
   } catch (err) {
     console.error('Search failed:', err)
@@ -103,7 +100,6 @@ const AllsortingFilters = computed(() => {
     let valA = a[sortAttribute.value]
     let valB = b[sortAttribute.value]
 
-    //Make string comparison case-insensitive
     if (typeof valA === 'string') valA = valA.toLowerCase()
     if (typeof valB === 'string') valB = valB.toLowerCase()
 
