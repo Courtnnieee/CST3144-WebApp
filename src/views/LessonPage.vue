@@ -71,10 +71,10 @@ async function doSearch() {
   try {
     let data
     if (!searchFilter.value) {
-      const res = await fetch('http://localhost:3000/api/lessons')
+      const res = await fetch('https://cst3144-webappbackend.onrender.com/api/lessons')
       data = await res.json()
     } else {
-      const res = await fetch(`http://localhost:3000/api/lessons/search?q=${searchFilter.value}`)
+      const res = await fetch(`https://cst3144-webappbackend.onrender.com/api/lessons/search?q=${searchFilter.value}`)
       const resData = await res.json()
       data = resData.data
     }
@@ -84,7 +84,6 @@ async function doSearch() {
     console.error('Search failed:', err)
   }
 }
-
 
 //filter sort
 const AllsortingFilters = computed(() => {

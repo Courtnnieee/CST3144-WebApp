@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, provide, onMounted } from 'vue' //function sharing and reactive object/array
+import { reactive, provide, onMounted } from 'vue' //watches for changes in object/array,function/data sharing, add DOM
 
 const lessons = reactive([])//shared
 const cart = reactive([])
@@ -7,7 +7,7 @@ const cart = reactive([])
 //fetch+mount cards
 onMounted(async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/lessons')
+    const res = await fetch('https://cst3144-webappbackend.onrender.com/api/lessons')
     const data = await res.json()
     lessons.push(...data)//array
   } catch (err) {

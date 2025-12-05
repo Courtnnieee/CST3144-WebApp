@@ -1,9 +1,12 @@
 <script setup>
-import { inject, ref, computed } from 'vue'
+import { inject, ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 //get the shared cart
 const cart = inject('cart')
 const cartActions = inject('cartActions')
+
+const router = useRouter()
 
 //checkout details
 const name = ref('')
@@ -19,52 +22,86 @@ function phoneValidation() {
   return /^[0-9]+$/.test(phone.value)
 }
 
+
 const canCheckout = computed(() => {
   return nameValidation() && phoneValidation() && cart.length > 0
 })
 
 async function submitOrder() {
-  if (!canCheckout) return
+  if (!canCheckout.value) return
 
   try {
-    for (const lesson of cart) {
-      //post order
-      await fetch('http://localhost:3000/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lessonID: lesson._id, name: name.value, phone: phone.value })
-      })
+    //grop cart items by lessonID
+    const grouped = {}
 
-      //update lesson space
-      await fetch(`http://localhost:3000/api/lessons/${lesson._id}`, {
+    for (const lesson of cart) {
+      if (!grouped[lesson._id]) {
+        grouped[lesson._id] = { lesson, quantity: 0 }
+      }
+      grouped[lesson._id].quantity++
+    }
+
+    const orderDetailsBody = {
+      name: name.value,
+      phone: phone.value,
+      items: Object.values(grouped).map(g => ({
+        lessonID: g.lesson._id,
+        quantity: g.quantity
+      }))
+    }
+
+    //fetch - order post
+    const res = await fetch('https://cst3144-webappbackend.onrender.com/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderDetailsBody)
+    })
+
+    if (!res.ok) throw new Error('Order failed')
+
+    //fetch - space put
+    for (const g of Object.values(grouped)) {
+      await fetch(`https://cst3144-webappbackend.onrender.com/api/lessons/${g.lesson._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ newSpace: lesson.space })
+        body: JSON.stringify({ newSpace: g.lesson.space })
       })
     }
-    orderMessage.value = 'Your order has been submitted. Thank you for booking!'
+
+    //success message
+    orderMessage.value = '✓ Order submitted successfully! Thank you for your purchase.'
     cart.splice(0)
+
+    // 6. Redirect
+    setTimeout(() => {
+      router.push('/')
+    }, 4000)
+
   } catch (err) {
     console.error(err)
     orderMessage.value = 'Unable to submit order. Try again to reorder your booking.'
   }
 }
+
+watch(
+  () => cart.length,
+  (val) => {
+    if (val === 0 && !orderMessage.value) {
+      setTimeout(() => router.push('/'), 2500)
+    }
+  }
+)
 </script>
 
 <template>
   <div class="shopping-cart-container">
-    <h2>Your Cart</h2>
 
-    <div v-if="cart.length === 0" class="empty-cart">
-      Looks like your cart is empty right now
-    </div>
-
-    <!--Cart items-->
-    <div v-else>
+    <div v-if="cart.length > 0">
+      <!-- Cart items -->
       <div class="cart-items">
         <transition-group name="fade" tag="div">
           <div v-for="(item, index) in cart" :key="item._id" class="cart-item">
-            <img :src="`http://localhost:3000/images/${item.image}`" />
+            <img :src="`https://cst3144-webappbackend.onrender.com/images/${item.image}`" />
             <div class="cart-item-info">
               <h3>Subject: {{ item.subject }}</h3>
               <p>Location: {{ item.location }}</p>
@@ -77,19 +114,29 @@ async function submitOrder() {
         </transition-group>
       </div>
 
-      <!--Checkout Form -->
+      <!-- Checkout Form -->
       <div class="checkout-form">
         <form @submit.prevent="submitOrder">
-          <label>Name</label>
-          <input v-model="name" placeholder="Enter your name" />
-          <label>Phone</label>
-          <input v-model="phone" placeholder="Enter your phone" />
+          <label>Full name</label>
+          <input v-model="name" placeholder="Enter your full name" />
+          <p v-if="name && !nameValidation()" class="error">Your name can only contain letters and spaces.</p>
 
-         <button type="submit" :disabled="!canCheckout">Checkout</button>
+          <label>Phone number</label>
+          <input v-model="phone" placeholder="Enter your phone" />
+          <p v-if="phone && !phoneValidation()" class="error">Your phone number can only contain numbers.</p>
+
+          <button type="submit" :disabled="!canCheckout">Complete Checkout</button>
         </form>
       </div>
     </div>
-    <div v-if="orderMessage">{{ orderMessage }}</div>
+
+  </div>
+  <div v-if="cart.length === 0 && !orderMessage" class="empty-cart">
+    Your cart is empty. Redirecting you home...
+  </div>
+
+  <div v-if="orderMessage" class="order-message">
+    {{ orderMessage }}
   </div>
 
 </template>
@@ -97,22 +144,13 @@ async function submitOrder() {
 
 <style scoped>
 .shopping-cart-container {
-  max-width: 800px;
+  max-width: 850px;
   margin: 2rem auto;
   padding: 1rem;
   font-family: Arial, sans-serif;
 }
 
-/* Cart page title */
-.shopping-cart-container h2 {
-  font-size: 40px;
-  font-weight: lighter;
-  margin: 0;
-  text-align: center;
-  color: #ffffff;
-  margin-bottom: 1.5rem;
-}
-
+/* Cart Items */
 .cart-items {
   display: flex;
   flex-direction: column;
@@ -122,18 +160,23 @@ async function submitOrder() {
 .cart-item {
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  background: #fff;
   border: 1px solid #ddd;
-  margin-bottom: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.cart-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .cart-item img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
   border-radius: 6px;
   margin-right: 1rem;
 }
@@ -143,93 +186,124 @@ async function submitOrder() {
 }
 
 .cart-item-info h3 {
-  margin: 0 0 0.3rem 0;
-  font-size: 1rem;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .cart-item-info p {
   margin: 0.2rem 0;
   font-size: 0.9rem;
+  color: #444;
 }
 
 .remove-btn {
-  margin-left: auto;
-  background-color: #cc3131;
-  color: white;
+  background: #d93434;
+  color: #fff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+  transition: background 0.25s ease, transform 0.1s ease;
 }
 
 .remove-btn:hover {
-  background-color: #a82929;
+  background: #b52929;
+  transform: scale(1.03);
 }
 
 /* Checkout Form */
 .checkout-form {
   margin-top: 2rem;
-  background-color: #ffffff;
+  background: #fff;
   padding: 1.5rem;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
 }
 
 .checkout-form h3 {
-  margin-bottom: 1rem;
-  color: #09d1c7;
   font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #08b9b0;
 }
 
 .checkout-form form {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.9rem;
 }
 
 .checkout-form label {
   font-weight: 600;
-  font-size: 0.95rem;
 }
 
 .checkout-form input {
-  padding: 0.6rem;
-  border: 1px solid #ccc;
+  padding: 0.7rem;
   border-radius: 6px;
-  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
 
-.book-btn {
+/* Submit button */
+button[type="submit"] {
   margin-top: 0.5rem;
   padding: 0.8rem;
-  background-color: #09d1c7;
+  background: #09d1c7;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.1s ease;
+  transition: background 0.25s ease, transform 0.1s ease;
 }
 
-.book-btn:hover {
-  background-color: #0c6478;
-  transform: scale(1.02);
+button[type="submit"]:hover:not(:disabled) {
+  background: #0c6478;
+  transform: scale(1.03);
 }
 
-/* Empty cart message */
+button[type="submit"]:disabled {
+  background: #bfbfbf;
+  cursor: not-allowed;
+}
+
+/* Error messages */
+.error {
+  color: #d11a1a;
+  font-size: 0.85rem;
+}
+
+/* Order / Empty Cart Messages */
+.order-message,
 .empty-cart {
+  margin-top: 1.5rem;
+  font-weight: bold;
+  font-size: 1rem;
   text-align: center;
-  color: #0c6478;
-  font-size: 1.4rem;
-  padding: 3rem 1rem;
-  font-weight: 500;
-  background-color: #ffffff;
-  border-radius: 12px;
-  margin-top: 2rem;
+  color: #09d1c7;
 }
 
+/* Fade-in animation for messages */
+.order-message,
+.empty-cart {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Mobile */
 @media (max-width: 600px) {
   .cart-item {
     flex-direction: column;
@@ -237,12 +311,18 @@ async function submitOrder() {
   }
 
   .cart-item img {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.7rem;
   }
 
   .remove-btn {
+    width: 100%;
     margin-left: 0;
-    margin-top: 0.5rem;
+    margin-top: 0.6rem;
+    text-align: center;
+  }
+
+  .checkout-form {
+    padding: 1rem;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="cards">
-    <img :src="`http://localhost:3000/images/${lesson.image}`" :alt="lesson.subject" />
+    <img :src="`https://cst3144-webappbackend.onrender.com/images/${lesson.image}`" :alt="lesson.subject" />
     <h2>{{ lesson.subject }}</h2>
     <h3> {{ lesson.location }}</h3>
     <p>£{{ lesson.price }}</p>
